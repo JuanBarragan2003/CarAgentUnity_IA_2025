@@ -1,0 +1,51 @@
+behaviors:
+  DQLCarAgent:
+    trainer_type: ppo
+    max_steps: 15000000       # 15 millones de pasos de entrenamiento
+    time_horizon: 64
+    summary_freq: 3200        # Guardar métricas cada 3k pasos
+    keep_checkpoints: 2
+    checkpoint_interval: 3000000  # Guardar modelo cada 3M pasos
+    threaded: true
+
+    hyperparameters:
+      batch_size: 1024
+      buffer_size: 10240
+      learning_rate: 0.0005         # Un poco más alto al principio
+      beta: 0.01                    # Promueve exploración temprana
+      epsilon: 0.3                  # Clip inicial más relajado
+      lambd: 0.95
+      num_epoch: 3
+      learning_rate_schedule: linear
+      beta_schedule: linear
+      epsilon_schedule: linear
+
+    network_settings:
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+      vis_encode_type: simple
+      deterministic: false
+
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+
+env_settings:
+  env_path: null        # Entrenamiento en modo Editor
+  num_envs: 1           # Solo un entorno posible en modo Editor
+  seed: 1    # Acelera entrenamiento en lo posible
+
+engine_settings:
+  width: 84
+  height: 84
+  quality_level: 0
+  target_frame_rate: -1
+  capture_frame_rate: 60
+
+checkpoint_settings:
+  run_id: DQL_15M5
+  initialize_from: null
+  resume: false
+  force: true
